@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { Home, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@/components/ModeToggle";
 import { RankEdIcon } from "@/components/icons/RankEdIcon";
 
 export function Header() {
