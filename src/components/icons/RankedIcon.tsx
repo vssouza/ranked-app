@@ -1,8 +1,8 @@
 import * as React from "react";
 
-type RankedIconProps = React.SVGProps<SVGSVGElement>;
+type RankEdIconProps = React.SVGProps<SVGSVGElement>;
 
-export function RankEdIcon(props: RankedIconProps) {
+export function RankEdIcon(props: RankEdIconProps) {
   return (
     <svg
       viewBox="0 0 100 100"

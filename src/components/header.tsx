@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Home, User } from "lucide-react";
+import { Home, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/mode-toggle";
 import { RankEdIcon } from "@/components/icons/RankEdIcon";
@@ -31,7 +31,7 @@ export function Header() {
 
           <Button variant="ghost" size="icon" asChild>
             <Link to="/login" aria-label="Login">
-              <User className="h-5 w-5" />
+              <LogIn className="h-5 w-5" />
             </Link>
           </Button>
 
