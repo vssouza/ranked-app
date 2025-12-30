@@ -5,7 +5,7 @@ export default function HomePage() {
     <main className="mx-auto max-w-6xl p-4">
       <Card>
         <CardHeader>
-          <CardTitle>Welcome to rankEd</CardTitle>
+          <CardTitle>Welcome to RankEd</CardTitle>
         </CardHeader>
         <CardContent className="text-sm text-muted-foreground">
           Your ranking UI will live here.
