@@ -40,21 +40,21 @@ export default function HomePage() {
             <InfoCard
               top={<Shuffle className="h-6 w-6 text-muted-foreground" />}
               title="Create Pairings"
-              description="Generate fair Swiss pairings each round and avoid repeat matchups."
+              description="Create fair Swiss, Round Robin, and Single Elimination pairings each round while avoiding repeat matchups."
               className="h-full"
             />
 
             <InfoCard
               top={<BarChart3 className="h-6 w-6 text-muted-foreground" />}
               title="Generate Standings"
-              description="Generate round pairings quickly and keep the event moving."
+              description="Generate accurate standings for Swiss, Round Robin, and Single Elimination formats with proper tie resolution."
               className="h-full"
             />
 
             <InfoCard
               top={<TrendingUp className="h-6 w-6 text-muted-foreground" />}
               title="Track Skills"
-              description="Generate round pairings quickly and keep the event moving."
+              description="Track player skills and performance over time using ELO-based ratings."
               className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full"
             />
           </div>
@@ -93,6 +93,17 @@ export default function HomePage() {
               className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full"
             />
           </div>
+        </div>
+      </section>
+      <section className="border-t py-16">
+        <div className="mx-auto max-w-6xl px-4 text-center space-y-6">
+          <p className="text-lg font-medium">
+            Ready to run your next tournament?
+          </p>
+
+          <Button asChild>
+            <Link to="/login">Get started</Link>
+          </Button>
         </div>
       </section>
     </main>
