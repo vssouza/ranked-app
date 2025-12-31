@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Shuffle, BarChart3, TrendingUp } from "lucide-react";
+import { InfoCard } from "@/components/InfoCards";
 
 export default function HomePage() {
   return (
@@ -37,44 +37,26 @@ export default function HomePage() {
             </p>
           </div>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
-            <Card className="h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-5">
-                  <Shuffle className="h-6 w-6 text-muted-foreground" />
-                  <CardTitle>Create Pairings</CardTitle>
-                </div>
-              </CardHeader>
+            <InfoCard
+              top={<Shuffle className="h-6 w-6 text-muted-foreground" />}
+              title="Create Pairings"
+              description="Generate fair Swiss pairings each round and avoid repeat matchups."
+              className="h-full"
+            />
 
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                Generate round pairings quickly and keep the event moving.
-              </CardContent>
-            </Card>
+            <InfoCard
+              top={<BarChart3 className="h-6 w-6 text-muted-foreground" />}
+              title="Generate Standings"
+              description="Generate round pairings quickly and keep the event moving."
+              className="h-full"
+            />
 
-            <Card className="h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-5">
-                  <BarChart3 className="h-6 w-6 text-muted-foreground" />
-                  <CardTitle>Generate Standings</CardTitle>
-                </div>
-              </CardHeader>
-
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                Generate round pairings quickly and keep the event moving.
-              </CardContent>
-            </Card>
-
-            <Card className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-5">
-                  <TrendingUp className="h-6 w-6 text-muted-foreground" />
-                  <CardTitle>Track Skills</CardTitle>
-                </div>
-              </CardHeader>
-
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                Generate round pairings quickly and keep the event moving.
-              </CardContent>
-            </Card>
+            <InfoCard
+              top={<TrendingUp className="h-6 w-6 text-muted-foreground" />}
+              title="Track Skills"
+              description="Generate round pairings quickly and keep the event moving."
+              className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full"
+            />
           </div>
         </div>
       </section>
@@ -90,41 +72,26 @@ export default function HomePage() {
           </div>
 
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
-            <Card className="h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-3">
-                  <Badge variant="secondary">Step 1</Badge>
-                  <CardTitle>Create a tournament</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                Choose the format, rounds, and scoring rules.
-              </CardContent>
-            </Card>
+            <InfoCard
+              top={<Badge variant="secondary">Step 1</Badge>}
+              title="Create a tournament"
+              description="Choose the format, rounds, and scoring rules."
+              className="h-full"
+            />
 
-            <Card className="h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-3">
-                  <Badge variant="secondary">Step 2</Badge>
-                  <CardTitle>Add players & results</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                Register players and submit match results each round.
-              </CardContent>
-            </Card>
+            <InfoCard
+              top={<Badge variant="secondary">Step 2</Badge>}
+              title="Add players & results"
+              description="Register players and submit match results each round."
+              className="h-full"
+            />
 
-            <Card className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full">
-              <CardHeader className="text-center">
-                <div className="flex flex-col items-center gap-3">
-                  <Badge variant="secondary">Step 3</Badge>
-                  <CardTitle>Generate pairings & standings</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="text-sm leading-relaxed text-muted-foreground">
-                RankEd updates pairings and standings instantly for you.
-              </CardContent>
-            </Card>
+            <InfoCard
+              top={<Badge variant="secondary">Step 3</Badge>}
+              title="Generate pairings & standings"
+              description="RankEd updates pairings and standings instantly for you."
+              className="sm:col-span-2 sm:mx-auto sm:max-w-sm md:max-w-md lg:col-span-1 lg:max-w-none h-full"
+            />
           </div>
         </div>
       </section>
