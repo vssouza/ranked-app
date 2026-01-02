@@ -24,6 +24,7 @@ dist-ssr
 *.sw?
 
 # Supabase local secrets & state
+.supabase/
 .supabase/.env
 .supabase/.env.*
 .supabase/.temp/
