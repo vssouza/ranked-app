@@ -22,3 +22,13 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Supabase local secrets & state
+.supabase/.env
+.supabase/.env.*
+.supabase/.temp/
+
+# Supabase local dev (Docker volumes, logs)
+supabase/.temp/
+supabase/.env
+supabase/.env.*
