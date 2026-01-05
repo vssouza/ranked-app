@@ -1,8 +1,8 @@
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Shuffle, BarChart3, TrendingUp } from "lucide-react";
-import { InfoCard } from "@/components/InfoCards";
+import {Link} from "react-router-dom";
+import {Button} from "@/components/ui/button";
+import {Badge} from "@/components/ui/badge";
+import {Shuffle, BarChart3, TrendingUp} from "lucide-react";
+import {InfoCard} from "@/components/InfoCards";
 
 export default function HomePage() {
   return (
@@ -17,14 +17,26 @@ export default function HomePage() {
             Rankings and pairings for TCG and tabletop tournaments.
           </p>
 
-          <div className="flex justify-center gap-3">
-            <Button asChild>
-              <Link to="/login">Get started</Link>
-            </Button>
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex justify-center gap-3">
+              <Button asChild>
+                <Link to="/register">Create account</Link>
+              </Button>
 
-            <Button variant="outline" asChild>
-              <Link to="/demo">View demo</Link>
-            </Button>
+              <Button variant="outline" asChild>
+                <Link to="/login">Sign in</Link>
+              </Button>
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Want to explore first?{" "}
+              <Link
+                to="/demo"
+                className="text-foreground underline underline-offset-4"
+              >
+                View demo
+              </Link>
+            </p>
           </div>
         </div>
       </section>
@@ -101,9 +113,15 @@ export default function HomePage() {
             Ready to run your next tournament?
           </p>
 
-          <Button asChild>
-            <Link to="/login">Get started</Link>
-          </Button>
+          <div className="flex justify-center gap-3">
+            <Button asChild>
+              <Link to="/register">Create account</Link>
+            </Button>
+
+            <Button variant="outline" asChild>
+              <Link to="/login">Sign in</Link>
+            </Button>
+          </div>
         </div>
       </section>
     </main>

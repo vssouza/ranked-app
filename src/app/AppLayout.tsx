@@ -13,3 +13,11 @@ export function AppLayout() {
     </div>
   );
 }
+
+export function BootstrapLayout() {
+  return (
+    <div className="min-h-screen">
+      <Outlet />
+    </div>
+  );
+}
