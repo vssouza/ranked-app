@@ -1,8 +1,9 @@
-import { Link } from "react-router-dom";
-import { Home, LogIn } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/ModeToggle";
-import { RankEdIcon } from "@/components/icons/RankEdIcon";
+import {Link} from "react-router-dom";
+import {Home, LogIn} from "lucide-react";
+import {Button} from "@/components/ui/button";
+import {ModeToggle} from "@/components/ModeToggle";
+import {RankEdIcon} from "@/components/icons/RankEdIcon";
+import {OrgSwitcher} from "./OrgSwitcher";
 
 export function Header() {
   return (
@@ -16,10 +17,10 @@ export function Header() {
         >
           <RankEdIcon className="h-6 w-6" />
           <span className="font-semibold">RankEd</span>
-          <span className="text-sm text-muted-foreground">
-            rankings playground
-          </span>
         </Link>
+
+        {/* Organization Switcher */}
+        <OrgSwitcher />
 
         {/* Actions */}
         <div className="flex items-center gap-2">
