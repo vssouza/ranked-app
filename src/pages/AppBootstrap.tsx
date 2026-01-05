@@ -23,7 +23,7 @@ export default function AppBootstrap() {
        * - many orgs → /dashboard
        * - super admin → /admin
        */
-      navigate("/", {replace: true}); // or /dashboard later
+      navigate("/dashboard", {replace: true});
     }
 
     bootstrap();
