@@ -1,50 +1,57 @@
-import * as React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import * as React from "react"
+import { Link, useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { apiGet, apiPost } from "@/lib/api"
 
 function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
 }
 
-// Simple username rule: letters/numbers/underscore, 3-20 chars
+// Simple username rule: letters/numbers/underscore, 3-32 chars
 function isValidUsername(username: string) {
-  const u = username.trim();
-  return u.length >= 3 && u.length <= 32 && /^[a-zA-Z0-9_]+$/.test(u);
+  const u = username.trim()
+  return u.length >= 3 && u.length <= 32 && /^[a-zA-Z0-9_]+$/.test(u)
 }
 
 function getErrorMessage(err: unknown, fallback: string) {
-  if (err instanceof Error) return err.message;
-  return fallback;
+  if (err instanceof Error) return err.message
+  return fallback
+}
+
+type RegisterResponse = {
+  ok: true
+  // You can extend this later if backend returns more:
+  // csrfToken?: string
 }
 
 export default function RegisterPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [username, setUsername] = React.useState("");
-  const [displayName, setDisplayName] = React.useState("");
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [confirmPassword, setConfirmPassword] = React.useState("")
+  const [username, setUsername] = React.useState("")
+  const [displayName, setDisplayName] = React.useState("")
 
-  const [submitting, setSubmitting] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [submitting, setSubmitting] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
 
-  const emailOk = isValidEmail(email);
-  const usernameOk = isValidUsername(username);
+  const emailOk = isValidEmail(email)
+  const usernameOk = isValidUsername(username)
   const isValidDisplayName =
-    displayName.trim().length >= 2 && displayName.trim().length <= 64;
-  const passwordOk = password.length >= 8;
-  const confirmOk = confirmPassword === password && confirmPassword.length > 0;
+    displayName.trim().length >= 2 && displayName.trim().length <= 64
+  const passwordOk = password.length >= 8
+  const confirmOk = confirmPassword === password && confirmPassword.length > 0
 
   const canSubmit =
     emailOk &&
@@ -52,48 +59,42 @@ export default function RegisterPage() {
     isValidDisplayName &&
     passwordOk &&
     confirmOk &&
-    !submitting;
+    !submitting
 
   async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
+    e.preventDefault()
+    setError(null)
 
     // Form validation (keep it explicit and readable)
-    if (!emailOk) return setError("Please enter a valid email.");
+    if (!emailOk) return setError("Please enter a valid email.")
     if (!usernameOk)
       return setError(
-        "Username must be 3–20 characters (letters, numbers, underscore)."
-      );
+        "Username must be 3–32 characters (letters, numbers, underscore)."
+      )
     if (!isValidDisplayName)
-      return setError("Display name must be at least 2 characters.");
-    if (!passwordOk) return setError("Password must be at least 8 characters.");
-    if (!confirmOk) return setError("Passwords do not match.");
+      return setError("Display name must be at least 2 characters.")
+    if (!passwordOk) return setError("Password must be at least 8 characters.")
+    if (!confirmOk) return setError("Passwords do not match.")
 
     try {
-      setSubmitting(true);
+      setSubmitting(true)
 
-      /**
-       * TODO: replace with your real auth + member creation flow.
-       *
-       * Suggested approach:
-       * 1) Supabase auth sign up
-       * 2) Call backend endpoint to create member row (or DB insert if you do it client-side safely)
-       *
-       * Example placeholders:
-       * await supabase.auth.signUp({ email, password })
-       * await api.post("/members/register", { email, username, display_name: displayName })
-       */
+      // Backend-owned registration: client does NOT talk to Supabase directly.
+      await apiPost<RegisterResponse>("/auth/register", {
+        email: email.trim(),
+        password,
+        username: username.trim(),
+        displayName: displayName.trim(),
+      })
 
-      // TEMP: simulate success
-      await new Promise((r) => setTimeout(r, 400));
+      // Optional: verify cookie session is set and hydrate user state.
+      await apiGet("/me")
 
-      navigate("/app");
+      navigate("/app")
     } catch (err) {
-      setError(
-        getErrorMessage(err, "Account creation failed. Please try again.")
-      );
+      setError(getErrorMessage(err, "Account creation failed. Please try again."))
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   }
 
@@ -199,5 +200,5 @@ export default function RegisterPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
