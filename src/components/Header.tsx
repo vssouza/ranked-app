@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Home, LogIn, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
 import { useAuth } from "@/auth/useAuth";
 
 export function Header() {
   const navigate = useNavigate();
   const { status, me, logout } = useAuth();
-  const [loggingOut, setLoggingOut] = React.useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const loading = status === "loading";
   const isAuthed = status === "authed" && !!me;
@@ -53,13 +52,12 @@ export function Header() {
           <span className="font-semibold">RankEd</span>
         </Link>
 
-        {/* Organization Switcher (only when authenticated) */}
+        {/* Organization Switcher (always for authed users) */}
         {isAuthed ? (
           <div className="min-w-55 flex justify-center">
             <OrgSwitcher />
           </div>
         ) : (
-          // Keep layout stable when not authed (optional)
           <div className="min-w-55" />
         )}
 

@@ -14,6 +14,10 @@ function isValidMePayload(x: unknown): x is MePayload {
 
   const o = x as Partial<MePayload>;
 
+  const activeOk =
+    typeof o.activeOrganisationId === "string" ||
+    o.activeOrganisationId === null;
+
   return (
     typeof o.user === "object" &&
     o.user !== null &&
@@ -23,7 +27,8 @@ function isValidMePayload(x: unknown): x is MePayload {
     typeof o.user.displayName === "string" &&
     typeof o.isSuperAdmin === "boolean" &&
     Array.isArray(o.memberships) &&
-    typeof o.hasAddresses === "boolean"
+    typeof o.hasAddresses === "boolean" &&
+    activeOk
   );
 }
 
@@ -50,7 +55,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isSuperAdmin: data.isSuperAdmin,
         memberships: data.memberships,
         hasAddresses: data.hasAddresses,
+        activeOrganisationId: data.activeOrganisationId ?? null, // ✅ NEW
       });
+
       setCsrfToken(data.csrfToken ?? null);
       setStatus("authed");
     },
@@ -66,12 +73,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const r = await api<MePayload>("/me");
 
       if (r.ok && isValidMePayload(r.data)) {
-        setMe(r.data);
+        setMe(r.data); // already includes activeOrganisationId
         setStatus("authed");
         return;
       }
 
-      // r is the error branch here
       if (!r.ok && r.status === 401) {
         setMe(null);
         setCsrfToken(null);

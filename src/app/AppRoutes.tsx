@@ -8,6 +8,7 @@ import AppBootstrap from "@/pages/AppBootstrap"
 import OnboardingPage from "@/pages/Onboarding"
 import DashboardPage from "@/pages/Dashboard"
 import { RequireAuth } from "@/auth/RequireAuth"
+import Profile from "@/pages/Profile"
 
 export default function AppRoutes() {
   return (
@@ -23,6 +24,7 @@ export default function AppRoutes() {
 
         <Route element={<RequireAuth />}>
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/dashboard" element={<DashboardPage />} />
         </Route>
       </Route>

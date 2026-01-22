@@ -22,11 +22,11 @@ export async function api<T>(
 
   const res = await fetch(url, {
     credentials: "include",
-    cache: "no-store",
+    // Only force no-store for non-GET or if explicitly requested
+    cache: init.method && init.method !== "GET" ? "no-store" : init.cache ?? "default",
     ...init,
     headers: {
       ...(init.headers ?? {}),
-      // Only set content-type if caller provided a body (prevents odd GET behavior)
       ...(init.body ? { "content-type": "application/json" } : {}),
     },
   })
@@ -39,3 +39,4 @@ export async function api<T>(
 
   return { ok: true, data: data as T }
 }
+
