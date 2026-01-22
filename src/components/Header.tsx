@@ -1,10 +1,10 @@
+import * as React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Home, LogIn, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ModeToggle } from "@/components/ModeToggle";
 import { RankEdIcon } from "@/components/icons/RankEdIcon";
 import { OrgSwitcher } from "./OrgSwitcher";
-import { useMe } from "@/lib/useMe";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,11 +12,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { apiPost } from "@/lib/api";
+
+import { useAuth } from "@/auth/useAuth";
 
 export function Header() {
-  const { me, loading, setMe } = useMe();
   const navigate = useNavigate();
+  const { status, me, logout } = useAuth();
+  const [loggingOut, setLoggingOut] = React.useState(false);
+
+  const loading = status === "loading";
+  const isAuthed = status === "authed" && !!me;
 
   function truncate(value: string, max = 15) {
     if (value.length <= max) return value;
@@ -24,11 +29,14 @@ export function Header() {
   }
 
   async function onLogout() {
+    if (loggingOut) return;
+    setLoggingOut(true);
+
     try {
-      await apiPost("/auth/logout", {});
+      await logout();
     } finally {
-      setMe(null);
-      navigate("/login");
+      setLoggingOut(false);
+      navigate("/login", { replace: true });
     }
   }
 
@@ -45,8 +53,15 @@ export function Header() {
           <span className="font-semibold">RankEd</span>
         </Link>
 
-        {/* Organization Switcher */}
-        <OrgSwitcher />
+        {/* Organization Switcher (only when authenticated) */}
+        {isAuthed ? (
+          <div className="min-w-55 flex justify-center">
+            <OrgSwitcher />
+          </div>
+        ) : (
+          // Keep layout stable when not authed (optional)
+          <div className="min-w-55" />
+        )}
 
         {/* Actions */}
         <div className="flex items-center gap-2">
@@ -56,7 +71,7 @@ export function Header() {
             </Link>
           </Button>
 
-          {loading ? null : me ? (
+          {loading ? null : isAuthed ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" aria-label="User menu">
@@ -97,10 +112,11 @@ export function Header() {
 
                 <DropdownMenuItem
                   onClick={onLogout}
+                  disabled={loggingOut}
                   className="text-destructive focus:text-destructive"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
-                  Logout
+                  {loggingOut ? "Logging out…" : "Logout"}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

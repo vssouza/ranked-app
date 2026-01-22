@@ -1,13 +1,16 @@
+import { useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 
 export default function DashboardPage() {
+  const navigate = useNavigate()
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10 space-y-6">
       <header className="space-y-2">
@@ -41,20 +44,24 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Quick actions</CardTitle>
-            <CardDescription>
-              Common things you might want to do.
-            </CardDescription>
+            <CardDescription>Common things you might want to do.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-2">
-            <Button className="w-full" disabled>
+            <Button className="w-full" onClick={() => navigate("/onboarding")}>
               Create organization
             </Button>
-            <Button variant="outline" className="w-full" disabled>
+
+            <Button
+              variant="outline"
+              className="w-full"
+              disabled
+              title="Coming soon"
+            >
               Create tournament
             </Button>
           </CardContent>
         </Card>
       </div>
     </div>
-  );
+  )
 }

@@ -1,58 +1,81 @@
-import * as React from "react";
-import {Link, useNavigate} from "react-router-dom";
+import * as React from "react"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import {Button} from "@/components/ui/button";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+} from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
+import { apiPost } from "@/lib/api"
+import { useAuth } from "@/auth/useAuth"
+import type { MePayload } from "@/auth/types"
 
 function isValidEmail(email: string) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())
 }
 
+// Backend returns: { ...payload, ok: true, csrfToken }
+type LoginResponse = MePayload & { ok: true; csrfToken: string }
+
 export default function LoginPage() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const location = useLocation()
+  const { setSessionFromAuthResponse, status } = useAuth()
 
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [submitting, setSubmitting] = React.useState(false);
-  const [error, setError] = React.useState<string | null>(null);
+  const [email, setEmail] = React.useState("")
+  const [password, setPassword] = React.useState("")
+  const [submitting, setSubmitting] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
 
-  const emailOk = isValidEmail(email);
-  const passwordOk = password.trim().length > 0;
-  const canSubmit = emailOk && passwordOk && !submitting;
+  React.useEffect(() => {
+    if (status === "authed") {
+      navigate("/app", { replace: true })
+    }
+  }, [status, navigate])
+
+  const emailOk = isValidEmail(email)
+  const passwordOk = password.trim().length > 0
+  const canSubmit = emailOk && passwordOk && !submitting
+
+  function getNextPath() {
+    const params = new URLSearchParams(location.search)
+    const next = params.get("next")
+    if (next && next.startsWith("/")) return next
+    return "/app"
+  }
 
   async function onSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
+    e.preventDefault()
+    setError(null)
 
-    if (!emailOk) return setError("Please enter a valid email.");
-    if (!passwordOk) return setError("Please enter your password.");
+    if (!emailOk) return setError("Please enter a valid email.")
+    if (!passwordOk) return setError("Please enter your password.")
 
     try {
-      setSubmitting(true);
+      setSubmitting(true)
 
-      // TODO: replace with your auth client call (Supabase / API)
-      // await auth.signInWithPassword({ email, password })
+      const data = await apiPost<LoginResponse>("/auth/login", { email, password })
 
-      // TEMP: simulate success
-      await new Promise((r) => setTimeout(r, 400));
+      // Hydrate auth immediately (no extra /me call)
+      setSessionFromAuthResponse(data)
 
-      navigate("/app"); // later: org selector / last org
+      // Return to where the user wanted to go
+      navigate(getNextPath(), { replace: true })
     } catch (err) {
+      // apiPost throws Error(message). Backend includes message for INVALID_CREDENTIALS.
       if (err instanceof Error) {
-        setError(err.message);
+        setError(err.message || "Login failed. Please try again.")
       } else {
-        setError("Login failed. Please try again.");
+        setError("Login failed. Please try again.")
       }
     } finally {
-      setSubmitting(false);
+      setSubmitting(false)
     }
   }
 
@@ -121,5 +144,5 @@ export default function LoginPage() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
